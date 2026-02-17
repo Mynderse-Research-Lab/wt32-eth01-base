@@ -1,38 +1,90 @@
-## WT32-ETH01 MQTT Client Node Setup
-This repository provides a basic setup for an MQTT client node designed to communicate over TCP using the WT32-ETH01 module.
+# WT32-ETH01 MQTT Client Node Setup
 
-## Entering Programming Mode on the WT32-ETH01
-Putting the WT32-ETH01 into programming mode can be a little tricky the first time, but once you've done it, it's straightforward.
+This repository includes a basic setup for an MQTT client node that communicates over TCP using the **WT32-ETH01 (ESP32 + Ethernet)** module.
+
+The following guide explains how to place the WT32-ETH01 into **programming mode** so you can flash firmware.
+
+---
+
+## Entering Programming Mode (WT32-ETH01)
+
+Putting the WT32-ETH01 into programming mode can feel confusing the first time, but once you've done it once, it becomes straightforward.
+
+---
 
 ## Required Hardware
-You will need a TTL device programmer. For this project, I am using the Waveshare USB to RS232 / RS485 / TTL converter.
+
+You will need a **USB-to-TTL serial programmer**.
+
+Example used for this project:
+- Waveshare USB to RS232 / RS485 / TTL Converter
+
+Any reliable 3.3V-compatible USB-to-TTL adapter should work.
+
+---
 
 ## Wiring the WT32-ETH01 for Programming
-Power: Connect 5V from your power supply or programmer to pin 12 of the WT32-ETH01.
-GND: Connect GND to the breakout board’s ground rail.
 
-## UART Connections:
+### Power Connections
 
-Connect RX0 from the programmer to TX0 on the WT32-ETH01.
+- **5V → Pin 12** (WT32-ETH01)
+- **GND → Ground rail**
+- Also connect **GND → Pin 11**
 
-Connect TX0 from the programmer to RX0 on the WT32-ETH01.
+> ⚠️ Ensure your programmer and power supply share a common ground.
 
-## Extra Ground Pin:
-Connect GND from the breakout board to pin 11 on the WT32-ETH01.
+---
 
-## Boot Mode Jumper:
-Use a jumper wire to connect pin 24 (IO0) to pin 23 (GND).
+### UART Connections
+
+- **Programmer RX → WT32-ETH01 TX0**
+- **Programmer TX → WT32-ETH01 RX0**
+
+> TX and RX must be crossed.
+
+---
+
+### Boot Mode Jumper
+
+To enter flashing mode:
+
+- Connect **Pin 24 (IO0)** to **Pin 23 (GND)** using a jumper wire.
+
+This forces the ESP32 into bootloader mode on reset.
+
+---
 
 ## Enter Programming Mode
-Briefly touch a jumper wire between the common GND and pin 1 (EN) to reset the module.
 
-Remove the jumper wire between pin 24 (IO0) and pin 23 (GND).
+1. Ensure IO0 (Pin 24) is connected to GND (Pin 23).
+2. Briefly touch **Pin 1 (EN)** to GND to reset the module.
+3. Remove the IO0-to-GND jumper.
 
-Your WT32-ETH01 is now in programming mode and ready for flashing firmware.
+The WT32-ETH01 is now in **programming mode** and ready to flash firmware.
+
+---
 
 ## Return to Normal Operation
-To return the WT32-ETH01 to normal operation mode, simply:
 
-Touch pin 1 (EN) with ground again to reset the module.
+After flashing firmware:
+
+1. Ensure IO0 is NOT connected to GND.
+2. Briefly connect **Pin 1 (EN)** to GND again to reset.
+
+The module will now boot normally and run your uploaded firmware.
+
+---
+
+## Notes
+
+- If flashing fails, double-check:
+  - TX/RX are crossed correctly
+  - IO0 is grounded during reset
+  - Common ground is connected
+- Some USB-to-TTL programmers require selecting 3.3V logic mode.
+
+---
+
+Your WT32-ETH01 should now be ready for MQTT-based TCP communication.
 
 ![alt text](<Screenshot from 2025-06-28 18-05-10-1.png>)
